@@ -1,0 +1,43 @@
+name: Push
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+
+permissions:
+  packages: write
+
+jobs:
+  push-image:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | docker login ghcr.io --username "${GITHUB_ACTOR}" --password-stdin
+
+      - name: Build and push the image
+        run: |
+          if [[ ${GITHUB_REF} == refs/heads/* ]]; then
+            image_tag="${GITHUB_REF#refs/heads/}"
+          elif [[ ${GITHUB_REF} == refs/tags/v* ]]; then
+            image_tag="${GITHUB_REF#refs/tags/v}"
+          fi
+
+          [[ -z ${image_tag} ]] && exit 1
+
+          if [[ ${image_tag} == "main" ]]; then
+            image_tag="latest"
+          fi
+
+          image_repository="ghcr.io/${{ github.repository_owner }}/iperf"
+          image_name="${image_repository}:${image_tag}"
+
+          docker build -t "${image_name}" .
+          docker push "${image_name}"

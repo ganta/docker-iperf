@@ -1,7 +1,7 @@
 #
 # Build the iperf
 #
-FROM debian:10-slim as builder
+FROM debian:11-slim as builder
 
 RUN apt-get update
 RUN apt-get install -y curl build-essential

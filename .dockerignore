@@ -1,2 +1,13 @@
+# Git
 .git
+.gitignore
+
+# Docker
 Dockerfile
+
+# Node.js
+node_modules/
+.npmrc
+
+# Prettier
+.prettierignore

@@ -1,4 +1,13 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>ganta/renovate-config"],
+  regexManagers: [
+    // iperf
+    {
+      fileMatch: ["Dockerfile"],
+      matchStrings: ["ENV IPERF_VERSION (?<currentValue>.*)\\n"],
+      datasourceTemplate: "github-tags",
+      depNameTemplate: "esnet/iperf",
+    },
+  ],
 }

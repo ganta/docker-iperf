@@ -8,7 +8,7 @@ RUN apt-get install -y curl build-essential
 
 WORKDIR /iperf
 
-ENV IPERF_VERSION 3.10.1
+ENV IPERF_VERSION 3.13
 ENV IPERF_DOWNLOAD_URL https://downloads.es.net/pub/iperf/iperf-${IPERF_VERSION}.tar.gz
 ENV IPERF_SHA256 03bc9760cc54a245191d46bfc8edaf8a4750f0e87abca6764486972044d6715a
 

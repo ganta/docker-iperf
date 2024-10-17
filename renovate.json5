@@ -2,6 +2,7 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>ganta/renovate-config"],
   customManagers: [
+    // iperf
     {
       customType: "regex",
       fileMatch: ["Dockerfile"],

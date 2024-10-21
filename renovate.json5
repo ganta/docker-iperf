@@ -9,7 +9,6 @@
       matchStrings: ["ENV IPERF_VERSION (?<currentValue>.*)\\n"],
       datasourceTemplate: "github-tags",
       depNameTemplate: "esnet/iperf",
-      versioningTemplate: "semver-coerced",
     },
   ],
 }

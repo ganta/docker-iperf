@@ -5,11 +5,14 @@
     // iperf
     {
       customType: "regex",
-      fileMatch: ["Dockerfile"],
-      matchStrings: ["ENV IPERF_VERSION (?<currentValue>.*)\\n"],
-      datasourceTemplate: "github-tags",
+      fileMatch: ["^Dockerfile$"],
+      matchStringsStrategy: "combination",
+      matchStrings: [
+        "ENV IPERF_VERSION (?<currentValue>.*)\\n",
+        "ENV IPERF_SHA256 (?<currentDigest>.*)\\n",
+      ],
+      datasourceTemplate: "github-release-attachment",
       depNameTemplate: "esnet/iperf",
-      versioningTemplate: "semver-coerced",
     },
   ],
 }

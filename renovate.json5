@@ -11,7 +11,7 @@
         "ENV IPERF_VERSION (?<currentValue>.*)\\n",
         "ENV IPERF_SHA256 (?<currentDigest>.*)\\n",
       ],
-      datasourceTemplate: "github-release-attachment",
+      datasourceTemplate: "github-release-attachments",
       depNameTemplate: "esnet/iperf",
       versioningTemplate: "semver-coerced",
     },

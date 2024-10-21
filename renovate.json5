@@ -13,6 +13,7 @@
       ],
       datasourceTemplate: "github-release-attachment",
       depNameTemplate: "esnet/iperf",
+      versioningTemplate: "semver-coerced",
     },
   ],
 }

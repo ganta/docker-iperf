@@ -22,7 +22,7 @@ RUN make
 #
 # Copy the executable binary to the distroless image
 #
-FROM gcr.io/distroless/static
+FROM gcr.io/distroless/base-debian12
 
 COPY --from=builder /iperf/src/iperf3 /usr/bin/iperf
 

@@ -3,46 +3,77 @@ name: CI
 on: pull_request
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+defaults:
+  run:
+    # The Bash options are different from those when unspecified.
+    # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#defaultsrunshell
+    shell: bash
 
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
           cache: npm
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      - run: npm run lint
+      - name: Run linter
+        run: npm run lint
 
   build-and-test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Build the image
-        run: docker build -t iperf .
+        run: docker build --tag iperf .
 
-      - name: Run the iperf as server
-        run: |
-          docker run --name iperf-server --rm --detach --publish 5201:5201 iperf
+      - name: Create Docker network
+        run: docker network create test-network
 
-      - id: network
+      - name: Run iperf as a server
         run: |
-          [[ $(ip -4 addr show dev eth0 | grep "inet") =~ ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/[0-9]{1,2} ]]
-          echo "ipaddr=${BASH_REMATCH[1]}" >> "${GITHUB_OUTPUT}"
+          docker run \
+            --rm \
+            --detach \
+            --name iperf-server \
+            --network test-network \
+            --publish 5201:5201 \
+            iperf
+
+      - name: Wait for the iperf server to start
+        run: |
+          for count in {1..10}
+          do
+            if nc -z localhost 5201
+            then
+              break
+            fi
+            echo -n "."
+            sleep 1
+          done
 
       - name: Test the iperf connection
         run: |
-          docker run --name iperf-client --rm iperf -c ${{ steps.network.outputs.ipaddr }} -t 1
+          docker run \
+            --rm \
+            --name iperf-client \
+            --network test-network \
+            iperf --client iperf-server --time 1
 
       - name: Stop the iperf server
         if: ${{ always() }}

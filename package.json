@@ -1,6 +1,13 @@
 {
   "private": true,
   "license": "UNLICENSED",
+  "packageManager": "pnpm@10.18.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "onFail": "error"
+    }
+  },
   "scripts": {
     "lint": "prettier --check .",
     "fix": "prettier --write ."

@@ -5,10 +5,8 @@
     {
       customType: "regex",
       managerFilePatterns: ["/^Dockerfile$/"],
-      matchStringsStrategy: "combination",
       matchStrings: [
-        "ENV IPERF_VERSION (?<currentValue>.*)\\n",
-        "ENV IPERF_SHA256 (?<currentDigest>.*)\\n",
+        "ENV IPERF_VERSION (?<currentValue>.*)\\n(?:.*\\n)*?ENV IPERF_SHA256 (?<currentDigest>.*?)\\n",
       ],
       datasourceTemplate: "github-release-attachments",
       depNameTemplate: "esnet/iperf",

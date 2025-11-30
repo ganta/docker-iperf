@@ -8,9 +8,9 @@ RUN apt-get install -y curl build-essential
 
 WORKDIR /iperf
 
-ENV IPERF_VERSION 3.19.1
+ENV IPERF_VERSION 3.20
 ENV IPERF_DOWNLOAD_URL https://github.com/esnet/iperf/releases/download/${IPERF_VERSION}/iperf-${IPERF_VERSION}.tar.gz
-ENV IPERF_SHA256 dc63f89ec581ea99f8b558d8eb35109de06383010db5a1906c208a562ba0c270
+ENV IPERF_SHA256 3acc572d1ecca4e0b20359c7bf0132ddc80d982efeee20c86f6726a9a6094388
 
 RUN curl --location --output iperf.tar.gz "${IPERF_DOWNLOAD_URL}"
 RUN echo "${IPERF_SHA256} iperf.tar.gz" > iperf.tar.gz.sha256

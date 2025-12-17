@@ -13,7 +13,7 @@
     "fix": "prettier --write ."
   },
   "devDependencies": {
-    "prettier": "3.7.3",
+    "prettier": "3.7.4",
     "prettier-plugin-sh": "0.18.0"
   }
 }
